@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import './Navbar.css';
+import './ComponentStyle/Navbar.css';
 
 export default function Navbar() {
   const { user, logout } = useAuth();

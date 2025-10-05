@@ -1,10 +1,10 @@
-package com.globacart;
+package com.globacart.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GlobaCartApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {

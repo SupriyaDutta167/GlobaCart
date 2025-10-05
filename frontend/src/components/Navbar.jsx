@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import './ComponentStyle/Navbar.css';
+import favicon from "../assets/GlobaCart-favicon.png";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -25,7 +26,7 @@ export default function Navbar() {
           className="navbar-logo"
           aria-label="GlobaCart - Go to homepage"
         >
-          GlobaCart
+          <span className="navbar-title"><img src={favicon} alt="GlobaCart Logo" className="navbar-favicon" />GlobaCart</span>
         </Link>
         
         <div className="navbar-links">

@@ -1,13 +1,13 @@
-package com.globacart;
+package com.globacart.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GlobaCartApplication {
+public class BackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GlobaCartApplication.class, args);
+		SpringApplication.run(BackendApplication.class, args);
 	}
 
 }

@@ -1,5 +1,6 @@
 GlobaCart/
-│── frontend/                         # React + Vite app
+│
+├── frontend/                         # React + Vite app
 │   ├── public/
 │   │   └── favicon.ico
 │   ├── src/
@@ -48,72 +49,71 @@ GlobaCart/
 │   ├── package.json
 │   ├── tailwind.config.js
 │   └── vite.config.js
-
-│── backend/                          # Spring Boot app
-│   ├── globacart-backend/            # Maven project folder
-│   │   ├── src/
-│   │   │   ├── main/
-│   │   │   │   ├── java/com/globacart/backend/
-│   │   │   │   │   ├── BackendApplication.java
-│   │   │   │   │   ├── config/
-│   │   │   │   │   │   ├── SecurityConfig.java
-│   │   │   │   │   │   ├── JwtAuthFilter.java
-│   │   │   │   │   │   └── JwtUtil.java
-│   │   │   │   │   ├── controller/
-│   │   │   │   │   │   ├── AuthController.java
-│   │   │   │   │   │   ├── ProductController.java
-│   │   │   │   │   │   ├── CartController.java
-│   │   │   │   │   │   ├── OrderController.java
-│   │   │   │   │   │   ├── PaymentController.java
-│   │   │   │   │   │   └── AdminController.java
-│   │   │   │   │   ├── dto/
-│   │   │   │   │   │   ├── LoginRequest.java
-│   │   │   │   │   │   ├── SignupRequest.java
-│   │   │   │   │   │   ├── ProductDTO.java
-│   │   │   │   │   │   ├── OrderDTO.java
-│   │   │   │   │   │   └── PaymentDTO.java
-│   │   │   │   │   ├── exception/
-│   │   │   │   │   │   ├── GlobalExceptionHandler.java
-│   │   │   │   │   │   └── ResourceNotFoundException.java
-│   │   │   │   │   ├── model/
-│   │   │   │   │   │   ├── User.java
-│   │   │   │   │   │   ├── Product.java
-│   │   │   │   │   │   ├── Category.java
-│   │   │   │   │   │   ├── CartItem.java
-│   │   │   │   │   │   ├── Order.java
-│   │   │   │   │   │   ├── OrderItem.java
-│   │   │   │   │   │   └── Payment.java
-│   │   │   │   │   ├── repository/
-│   │   │   │   │   │   ├── UserRepository.java
-│   │   │   │   │   │   ├── ProductRepository.java
-│   │   │   │   │   │   ├── CategoryRepository.java
-│   │   │   │   │   │   ├── CartRepository.java
-│   │   │   │   │   │   ├── OrderRepository.java
-│   │   │   │   │   │   └── PaymentRepository.java
-│   │   │   │   │   ├── service/
-│   │   │   │   │   │   ├── AuthService.java
-│   │   │   │   │   │   ├── ProductService.java
-│   │   │   │   │   │   ├── CartService.java
-│   │   │   │   │   │   ├── OrderService.java
-│   │   │   │   │   │   └── PaymentService.java
-│   │   │   │   │   └── util/
-│   │   │   │   │       └── PasswordEncoderUtil.java
-│   │   │   │   └── resources/
-│   │   │   │       ├── application.properties
-│   │   │   │       └── data.sql
-│   │   │   └── test/java/com/globacart/backend/
-│   │   │       └── BackendApplicationTests.java
-│   │   ├── pom.xml
-│   │   └── Dockerfile
-
-│── database/
+│
+├── backend/                          # Spring Boot backend app
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/com/globacart/backend/
+│   │   │   │   ├── BackendApplication.java
+│   │   │   │   ├── config/
+│   │   │   │   │   ├── SecurityConfig.java
+│   │   │   │   │   ├── JwtAuthFilter.java
+│   │   │   │   │   └── JwtUtil.java
+│   │   │   │   ├── controller/
+│   │   │   │   │   ├── AuthController.java
+│   │   │   │   │   ├── ProductController.java
+│   │   │   │   │   ├── CartController.java
+│   │   │   │   │   ├── OrderController.java
+│   │   │   │   │   ├── PaymentController.java
+│   │   │   │   │   └── AdminController.java
+│   │   │   │   ├── dto/
+│   │   │   │   │   ├── LoginRequest.java
+│   │   │   │   │   ├── SignupRequest.java
+│   │   │   │   │   ├── ProductDTO.java
+│   │   │   │   │   ├── OrderDTO.java
+│   │   │   │   │   └── PaymentDTO.java
+│   │   │   │   ├── exception/
+│   │   │   │   │   ├── GlobalExceptionHandler.java
+│   │   │   │   │   └── ResourceNotFoundException.java
+│   │   │   │   ├── model/
+│   │   │   │   │   ├── User.java
+│   │   │   │   │   ├── Product.java
+│   │   │   │   │   ├── Category.java
+│   │   │   │   │   ├── CartItem.java
+│   │   │   │   │   ├── Order.java
+│   │   │   │   │   ├── OrderItem.java
+│   │   │   │   │   └── Payment.java
+│   │   │   │   ├── repository/
+│   │   │   │   │   ├── UserRepository.java
+│   │   │   │   │   ├── ProductRepository.java
+│   │   │   │   │   ├── CategoryRepository.java
+│   │   │   │   │   ├── CartRepository.java
+│   │   │   │   │   ├── OrderRepository.java
+│   │   │   │   │   └── PaymentRepository.java
+│   │   │   │   ├── service/
+│   │   │   │   │   ├── AuthService.java
+│   │   │   │   │   ├── ProductService.java
+│   │   │   │   │   ├── CartService.java
+│   │   │   │   │   ├── OrderService.java
+│   │   │   │   │   └── PaymentService.java
+│   │   │   │   └── util/
+│   │   │   │       └── PasswordEncoderUtil.java
+│   │   │   └── resources/
+│   │   │       ├── application.properties
+│   │   │       └── data.sql
+│   │   └── test/java/com/globacart/backend/
+│   │       └── BackendApplicationTests.java
+│   ├── pom.xml
+│   └── Dockerfile
+│
+├── database/
 │   ├── schema.sql
 │   ├── seed.sql
 │   └── migrations/
-
-│── docs/
+│
+├── docs/
 │   ├── module_document.pdf
 │   └── architecture.png
-
-│── .gitignore
-│── README.md
+│
+├── .gitignore
+└── README.md

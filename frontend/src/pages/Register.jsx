@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import './PageStyle/Register.css';
 
 export default function Register() {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({ username: '', email: '', password: '' });
   const [error, setError] = useState('');
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -14,24 +15,47 @@ export default function Register() {
     e.preventDefault();
     setError('');
     try {
-      await register(form);
-      // redirect to login after registration
-      navigate('/login');
+      await register(form); // form now has username, email, password
+      navigate('/login'); // Redirect after successful registration
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      // Spring backend sends message in response body
+      setError(err.response?.data || 'Registration failed');
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 border rounded">
-      <h2 className="text-2xl mb-4">Register</h2>
-      {error && <p className="text-red-600">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input name="name" placeholder="Name" value={form.name} onChange={handleChange} className="w-full p-2 border" required />
-        <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} className="w-full p-2 border" required />
-        <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} className="w-full p-2 border" required />
-        <button type="submit" className="w-full p-2 bg-blue-600 text-white rounded">Register</button>
-      </form>
+    <div className="register-container">
+      <div className="register-card">
+        <h2>Register</h2>
+        {error && <p className="error-message">{error}</p>}
+
+        <form onSubmit={handleSubmit}>
+          <input
+            name="username"
+            placeholder="Username"
+            value={form.username}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">Register</button>
+        </form>
+      </div>
     </div>
   );
 }

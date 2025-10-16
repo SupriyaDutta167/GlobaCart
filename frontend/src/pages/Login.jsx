@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import './PageStyle/Login.css';
 
 export default function Login() {
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -17,10 +17,10 @@ export default function Login() {
     e.preventDefault();
     setError('');
     try {
-      await login(form.email, form.password);
+      await login(form); // pass { username, password } to login
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data || 'Login failed'); // Spring backend error
     }
   };
 
@@ -41,13 +41,13 @@ export default function Login() {
         
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="email" className="form-label">Email Address</label>
+            <label htmlFor="username" className="form-label">Username</label>
             <input 
-              id="email"
-              name="email" 
-              type="email" 
-              placeholder="Enter your email" 
-              value={form.email} 
+              id="username"
+              name="username" 
+              type="text" 
+              placeholder="Enter your username" 
+              value={form.username} 
               onChange={handleChange} 
               className="form-input"
               required 

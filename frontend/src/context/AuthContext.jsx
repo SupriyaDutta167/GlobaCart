@@ -1,57 +1,49 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import * as authAPI from '../services/authAPI';
+// Path: frontend/src/context/AuthContext.jsx
+import React, { createContext, useContext } from 'react';
+import { loginUser, registerUser, logoutUser, getCurrentUser } from '../services/authAPI';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(() => localStorage.getItem('token'));
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const load = async () => {
-      if (!token) {
-        setUser(null);
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await authAPI.me();
-        setUser(res.data);
-      } catch (err) {
-        console.error('Profile fetch failed', err);
-        localStorage.removeItem('token');
-        setToken(null);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, [token]);
-
-  const login = async (email, password) => {
-    const res = await authAPI.login({ email, password });
-    const newToken = res.data.token;
-    localStorage.setItem('token', newToken);
-    setToken(newToken);
-    // profile will be fetched by effect
-    return res;
+  
+  const login = async (credentials) => {
+    try {
+      const res = await loginUser(credentials);
+      return res.data; // backend user object
+    } catch (err) {
+      throw err.response?.data || 'Login failed';
+    }
   };
 
-  const register = async (payload) => {
-    const res = await authAPI.register(payload);
-    return res;
+  const register = async (userData) => {
+    try {
+      const res = await registerUser(userData);
+      return res.data;
+    } catch (err) {
+      throw err.response?.data || 'Registration failed';
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
-    setUser(null);
+  const logout = async () => {
+    try {
+      const res = await logoutUser();
+      return res.data;
+    } catch (err) {
+      throw err.response?.data || 'Logout failed';
+    }
+  };
+
+  const getUser = async () => {
+    try {
+      const res = await getCurrentUser();
+      return res.data;
+    } catch (err) {
+      return null;
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, token, login, register, logout }}>
+    <AuthContext.Provider value={{ login, register, logout, getUser }}>
       {children}
     </AuthContext.Provider>
   );

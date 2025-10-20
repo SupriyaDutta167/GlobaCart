@@ -1,3 +1,4 @@
+// Path: frontend/src/pages/Register.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -15,11 +16,10 @@ export default function Register() {
     e.preventDefault();
     setError('');
     try {
-      await register(form); // form now has username, email, password
-      navigate('/login'); // Redirect after successful registration
+      await register(form); // sends { username, email, password }
+      navigate('/login'); // redirect after successful registration
     } catch (err) {
-      // Spring backend sends message in response body
-      setError(err.response?.data || 'Registration failed');
+      setError(err || 'Registration failed');
     }
   };
 

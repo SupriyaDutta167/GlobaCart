@@ -1,22 +1,23 @@
+// Path: frontend/src/services/api.js
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8080/auth';
-
-// Create an axios instance
+// Create an Axios instance
 const api = axios.create({
-  baseURL: API_BASE,
-  headers: { 'Content-Type': 'application/json' }
+  baseURL: 'http://localhost:8080/api', // backend base URL
+  withCredentials: true,               // send cookies for session-based auth
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-// Interceptor to add Authorization header for requests after login (Basic Auth)
-api.interceptors.request.use(config => {
-  const username = localStorage.getItem('username');
-  const password = localStorage.getItem('password'); // store temporarily for basic auth
-  if (username && password) {
-    const token = btoa(`${username}:${password}`); // Base64 encode
-    config.headers.Authorization = `Basic ${token}`;
+// Optional: Response interceptor for global error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Customize error object to return backend message
+    const err = error.response?.data || error.message || 'An error occurred';
+    return Promise.reject(err);
   }
-  return config;
-});
+);
 
 export default api;

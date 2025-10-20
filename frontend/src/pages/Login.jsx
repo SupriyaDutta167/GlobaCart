@@ -1,14 +1,17 @@
+// Path: frontend/src/pages/Login.jsx
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './PageStyle/Login.css';
 
 export default function Login() {
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  
   const from = location.state?.from?.pathname || '/';
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,11 +19,14 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
     try {
-      await login(form); // pass { username, password } to login
+      await login(form); // sends { email, password }
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.response?.data || 'Login failed'); // Spring backend error
+      setError(err || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,13 +47,13 @@ export default function Login() {
         
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="username" className="form-label">Username</label>
+            <label htmlFor="email" className="form-label">Email</label>
             <input 
-              id="username"
-              name="username" 
-              type="text" 
-              placeholder="Enter your username" 
-              value={form.username} 
+              id="email"
+              name="email" 
+              type="email" 
+              placeholder="Enter your email" 
+              value={form.email} 
               onChange={handleChange} 
               className="form-input"
               required 
@@ -68,8 +74,10 @@ export default function Login() {
             />
           </div>
           
-          <button type="submit" className="login-button">
-            <span className="button-text">Sign In</span>
+          <button type="submit" className="login-button" disabled={loading}>
+            <span className="button-text">
+              {loading ? 'Signing In...' : 'Sign In'}
+            </span>
             <span className="button-icon">→</span>
           </button>
         </form>
@@ -77,7 +85,7 @@ export default function Login() {
         <div className="login-footer">
           <p className="footer-text">
             Don't have an account? 
-            <a href="/register" className="footer-link">Create one here</a>
+            <Link to="/register" className="footer-link">Create one here</Link>
           </p>
         </div>
       </div>

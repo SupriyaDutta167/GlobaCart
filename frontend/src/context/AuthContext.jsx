@@ -1,49 +1,81 @@
 // Path: frontend/src/context/AuthContext.jsx
-import React, { createContext, useContext } from 'react';
-import { loginUser, registerUser, logoutUser, getCurrentUser } from '../services/authAPI';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { 
+  loginUser, 
+  registerUser as apiRegisterUser, // aliased to avoid name conflict
+  registerSeller as apiRegisterSeller, // aliased
+  logoutUser, 
+  getCurrentUser 
+} from '../services/authAPI';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  
+  const [user, setUser] = useState(null); // Fixed: removed extra '='
+  const [loading, setLoading] = useState(true); // Fixed: removed extra '='
+
+  // fetch user on page load
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getCurrentUser();
+        setUser(res.data);
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   const login = async (credentials) => {
-    try {
-      const res = await loginUser(credentials);
-      return res.data; // backend user object
-    } catch (err) {
-      throw err.response?.data || 'Login failed';
-    }
+    const res = await loginUser(credentials); // This now correctly calls the right API endpoint
+    setUser(res.data);
+    return res.data;
   };
 
-  const register = async (userData) => {
-    try {
-      const res = await registerUser(userData);
-      return res.data;
-    } catch (err) {
-      throw err.response?.data || 'Registration failed';
-    }
+  // Specific function for USER registration
+  const registerUser = async (userData) => {
+    const res = await apiRegisterUser(userData);
+    setUser(res.data);
+    return res.data;
+  };
+
+  // Specific function for SELLER registration
+  const registerSeller = async (userData) => {
+    const res = await apiRegisterSeller(userData);
+    setUser(res.data);
+    return res.data;
   };
 
   const logout = async () => {
-    try {
-      const res = await logoutUser();
-      return res.data;
-    } catch (err) {
-      throw err.response?.data || 'Logout failed';
-    }
+    await logoutUser();
+    setUser(null);
   };
 
   const getUser = async () => {
     try {
       const res = await getCurrentUser();
+      setUser(res.data);
       return res.data;
-    } catch (err) {
+    } catch {
+      setUser(null);
       return null;
     }
   };
 
   return (
-    <AuthContext.Provider value={{ login, register, logout, getUser }}>
+    <AuthContext.Provider 
+      value={{ 
+        user, 
+        loading, 
+        login, 
+        registerUser, // renamed from 'register'
+        registerSeller, // added
+        logout, 
+        getUser 
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

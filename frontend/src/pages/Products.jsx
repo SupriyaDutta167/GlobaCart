@@ -1,32 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { listProducts } from '../services/productAPI';
 import ProductCard from '../components/ProductCard';
-import Loader from '../components/Loader';
+import './PageStyle/Products.css';
 
 export default function Products() {
-  const [products, setProducts] = useState(null);
-  const [error, setError] = useState('');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = async () => {
+    const fetchProducts = async () => {
       try {
-        const res = await listProducts();
-        setProducts(res.data || []);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to load products');
+        const data = await listProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      } finally {
+        setLoading(false);
       }
     };
-    load();
+    fetchProducts();
   }, []);
 
-  if (!products) return <Loader />;
+  const handleAddToCart = (product) => {
+    alert(`Added ${product.name} to cart!`);
+    // Implement actual cart logic later
+  };
+
+  const handleBuyNow = (product) => {
+    alert(`Buying ${product.name}...`);
+    // Redirect to checkout or cart page later
+  };
+
+  if (loading) return <div>Loading products...</div>;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {error && <div className="text-red-600">{error}</div>}
-      {products.length === 0 && <div>No products yet</div>}
-      {products.map(p => <ProductCard key={p.id} product={p} />)}
+    <div className="products-container">
+      <h2>All Products</h2>
+      <div className="product-grid">
+        {products.length > 0 ? (
+          products.map((p) => (
+            <ProductCard
+              key={p.id}
+              product={p}
+              onAddToCart={handleAddToCart}
+              onBuyNow={handleBuyNow}
+            />
+          ))
+        ) : (
+          <p>No products available.</p>
+        )}
+      </div>
     </div>
   );
 }

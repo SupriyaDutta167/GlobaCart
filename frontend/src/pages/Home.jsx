@@ -7,24 +7,24 @@ import './PageStyle/Home.css';
 const Home = () => {
   const [user, setUser] = useState(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-  const { getUser, logout } = useAuth();
+  const { getUser, logout } = useAuth(); //
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const data = await getUser();
+      const data = await getUser(); //
       if (!data) {
-        navigate('/login');
+        navigate('/login'); //
       } else {
-        setUser(data);
+        setUser(data); //
       }
     };
     fetchUser();
-  }, []);
+  }, []); //
 
   const handleLogout = async () => {
-    await logout();
-    navigate('/login');
+    await logout(); //
+    navigate('/login'); //
   };
 
   if (!user) return (
@@ -32,7 +32,7 @@ const Home = () => {
       <div className="loading-spinner"></div>
       <p>Loading...</p>
     </div>
-  );
+  ); //
 
   return (
     <div className="home-container">
@@ -93,92 +93,143 @@ const Home = () => {
         </div>
       </header>
 
-      <section className="dashboard-section">
-        <h2 className="section-title">Your Dashboard</h2>
-        <div className="dashboard-grid">
-          <div className="dashboard-card" onClick={() => navigate('/orders')}>
-            <div className="card-icon orders-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
-              </svg>
+      {/* --- START: ADDED LOGIC --- */}
+      {/* Check user role */}
+      {user.role === 'SELLER' ? (
+        
+        // --- IF SELLER, show Seller Dashboard ---
+        <section className="dashboard-section">
+          <h2 className="section-title">Seller Dashboard</h2>
+          <div className="dashboard-grid">
+            
+            <div className="dashboard-card" onClick={() => navigate('/admin/manage-products')}>
+              <div className="card-icon orders-icon"> {/* Using existing class */}
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </div>
+              <h3 className="card-title">Manage Products</h3>
+              <p className="card-description">Add, edit, or delete your ads</p>
             </div>
-            <h3 className="card-title">My Orders</h3>
-            <p className="card-description">Track, return, or buy again</p>
-          </div>
 
-          <div className="dashboard-card" onClick={() => navigate('/cart')}>
-            <div className="card-icon cart-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="9" cy="21" r="1"/>
-                <circle cx="20" cy="21" r="1"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
-              </svg>
+            <div className="dashboard-card" onClick={() => navigate('/orders')}>
+              <div className="card-icon orders-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
+                </svg>
+              </div>
+              <h3 className="card-title">View Orders</h3>
+              <p className="card-description">View sales and fulfill orders</p>
             </div>
-            <h3 className="card-title">My Cart</h3>
-            <p className="card-description">View and edit your cart</p>
-          </div>
 
-          <div className="dashboard-card" onClick={() => navigate('/buy-again')}>
-            <div className="card-icon buyagain-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0118.8-4.3M22 12.5a10 10 0 01-18.8 4.2"/>
-              </svg>
+            <div className="dashboard-card" onClick={() => navigate('/settings')}>
+              <div className="card-icon settings-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 1v6m0 6v6m-6-6h6m6 0h6"/>
+                  <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                </svg>
+              </div>
+              <h3 className="card-title">Settings</h3>
+              <p className="card-description">Manage preferences</p>
             </div>
-            <h3 className="card-title">Buy Again</h3>
-            <p className="card-description">Reorder your favorites</p>
+            
           </div>
+        </section>
 
-          <div className="dashboard-card" onClick={() => navigate('/your-lists')}>
-            <div className="card-icon lists-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="8" y1="6" x2="21" y2="6"/>
-                <line x1="8" y1="12" x2="21" y2="12"/>
-                <line x1="8" y1="18" x2="21" y2="18"/>
-                <line x1="3" y1="6" x2="3.01" y2="6"/>
-                <line x1="3" y1="12" x2="3.01" y2="12"/>
-                <line x1="3" y1="18" x2="3.01" y2="18"/>
-              </svg>
+      ) : (
+        
+        // --- ELSE, show ORIGINAL User Dashboard ---
+        <section className="dashboard-section">
+          <h2 className="section-title">Your Dashboard</h2>
+          <div className="dashboard-grid">
+            <div className="dashboard-card" onClick={() => navigate('/orders')}>
+              <div className="card-icon orders-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>
+                </svg>
+              </div>
+              <h3 className="card-title">My Orders</h3>
+              <p className="card-description">Track, return, or buy again</p>
             </div>
-            <h3 className="card-title">Your Lists</h3>
-            <p className="card-description">Manage wishlists & ideas</p>
-          </div>
 
-          <div className="dashboard-card" onClick={() => navigate('/nation')}>
-            <div className="card-icon nation-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
+            <div className="dashboard-card" onClick={() => navigate('/cart')}>
+              <div className="card-icon cart-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="9" cy="21" r="1"/>
+                  <circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+                </svg>
+              </div>
+              <h3 className="card-title">My Cart</h3>
+              <p className="card-description">View and edit your cart</p>
             </div>
-            <h3 className="card-title">Nation</h3>
-            <p className="card-description">Explore regional products</p>
-          </div>
 
-          <div className="dashboard-card" onClick={() => navigate('/settings')}>
-            <div className="card-icon settings-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6m-6-6h6m6 0h6"/>
-                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
-              </svg>
+            <div className="dashboard-card" onClick={() => navigate('/buy-again')}>
+              <div className="card-icon buyagain-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0118.8-4.3M22 12.5a10 10 0 01-18.8 4.2"/>
+                </svg>
+              </div>
+              <h3 className="card-title">Buy Again</h3>
+              <p className="card-description">Reorder your favorites</p>
             </div>
-            <h3 className="card-title">Settings</h3>
-            <p className="card-description">Manage preferences</p>
-          </div>
 
-          <div className="dashboard-card" onClick={() => navigate('/help')}>
-            <div className="card-icon help-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
+            <div className="dashboard-card" onClick={() => navigate('/your-lists')}>
+              <div className="card-icon lists-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="8" y1="6" x2="21" y2="6"/>
+                  <line x1="8" y1="12" x2="21" y2="12"/>
+                  <line x1="8" y1="18" x2="21" y2="18"/>
+                  <line x1="3" y1="6" x2="3.01" y2="6"/>
+                  <line x1="3" y1="12" x2="3.01" y2="12"/>
+                  <line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+              </div>
+              <h3 className="card-title">Your Lists</h3>
+              <p className="card-description">Manage wishlists & ideas</p>
             </div>
-            <h3 className="card-title">Help</h3>
-            <p className="card-description">Get support & assistance</p>
+
+            <div className="dashboard-card" onClick={() => navigate('/nation')}>
+              <div className="card-icon nation-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <h3 className="card-title">Nation</h3>
+              <p className="card-description">Explore regional products</p>
+            </div>
+
+            <div className="dashboard-card" onClick={() => navigate('/settings')}>
+              <div className="card-icon settings-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 1v6m0 6v6m-6-6h6m6 0h6"/>
+                  <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                </svg>
+              </div>
+              <h3 className="card-title">Settings</h3>
+              <p className="card-description">Manage preferences</p>
+            </div>
+
+            <div className="dashboard-card" onClick={() => navigate('/help')}>
+              <div className="card-icon help-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+              </div>
+              <h3 className="card-title">Help</h3>
+              <p className="card-description">Get support & assistance</p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+      )}
+      {/* --- END: ADDED LOGIC --- */}
+
     </div>
   );
 };

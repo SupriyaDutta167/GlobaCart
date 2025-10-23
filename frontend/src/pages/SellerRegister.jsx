@@ -1,13 +1,13 @@
-// Path: frontend/src/pages/Register.jsx
+// Path: frontend/src/pages/SellerRegister.jsx
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Added Link
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import './PageStyle/Register.css';
+import './PageStyle/Register.css'; // Reusing the same styles
 
-export default function Register() {
+export default function SellerRegister() {
   const [form, setForm] = useState({ username: '', email: '', password: '' }); // Fixed
   const [error, setError] = useState(''); // Fixed
-  const { registerUser } = useAuth(); // Fixed
+  const { registerSeller } = useAuth(); // Fixed
   const navigate = useNavigate();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,23 +16,26 @@ export default function Register() {
     e.preventDefault();
     setError('');
     try {
-      await registerUser(form); // Changed from 'register'
-      navigate('/login'); // redirect after successful registration
+      await registerSeller(form); // Using registerSeller
+      navigate('/login'); // redirect to login, they can now log in as a seller
     } catch (err) {
-      setError(err || 'Registration failed');
+      setError(err || 'Seller registration failed');
     }
   };
 
   return (
     <div className="register-container">
       <div className="register-card">
-        <h2>Create your Account</h2>
+        <h2>Become a Seller</h2>
+        <p style={{ textAlign: 'center', marginBottom: '1rem' }}>
+          Create your seller account
+        </p>
         {error && <p className="error-message">{error}</p>}
 
         <form onSubmit={handleSubmit}>
           <input
             name="username"
-            placeholder="Username"
+            placeholder="Store Name (Username)"
             value={form.username}
             onChange={handleChange}
             required
@@ -40,7 +43,7 @@ export default function Register() {
           <input
             name="email"
             type="email"
-            placeholder="Email"
+            placeholder="Business Email"
             value={form.email}
             onChange={handleChange}
             required
@@ -53,18 +56,18 @@ export default function Register() {
             onChange={handleChange}
             required
           />
-          <button type="submit">Register</button>
+          <button type="submit">Register as Seller</button>
         </form>
-        
+
         <div className="register-footer" style={{ marginTop: '1rem', textAlign: 'center' }}>
           <p>
-            Are you a seller?{' '}
-            <Link to="/seller/register" style={{ color: '#007bff' }}>
-              Register here
+            Already have an account?{' '}
+            <Link to="/login" style={{ color: '#007bff' }}>
+              Login here
             </Link>
           </p>
         </div>
-
+        
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
+// Path: frontend/src/App.jsx
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import SellerRegister from './pages/SellerRegister'; // <-- 1. IMPORT
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
@@ -13,30 +15,57 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { useAuth } from './context/AuthContext';
 
-function ProtectedRoute({ children }) {
+
+// Seller Pages
+import SellerDashboard from './pages/admin/SellerDashboard';
+import AddProduct from './pages/admin/AddProduct';
+import ProductDetailSeller from './pages/admin/ProductDetailSeller';
+
+function ProtectedRoute({ children, allowedRoles }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="p-6">Loading...</div>;
+  if (loading) return <div style={{ padding: '20px' }}>Loading...</div>;
   if (!user) return <Navigate to="/login" replace />;
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
   return children;
 }
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
-      <main className="flex-1 container mx-auto p-4">
+      <main style={{ flex: 1, padding: '1rem' }}>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/seller/register" element={<SellerRegister />} /> {/* <-- 2. ADD ROUTE */}
+
+          {/* Protected routes (rest of file is unchanged) ... */}
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute allowedRoles={['USER', 'SELLER', 'ADMIN']}> {/* Note: Backend uses uppercase roles */}
+                <Cart />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute allowedRoles={['USER']}>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profile"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['USER', 'SELLER', 'ADMIN']}>
                 <Profile />
               </ProtectedRoute>
             }
@@ -44,11 +73,39 @@ export default function App() {
           <Route
             path="/orders"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['USER', 'SELLER', 'ADMIN']}>
                 <Orders />
               </ProtectedRoute>
             }
           />
+
+          {/* Seller-only routes */}
+          <Route
+            path="/seller/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['SELLER', 'ADMIN']}> {/* Added ADMIN */}
+                <SellerDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/seller/add-product"
+            element={
+              <ProtectedRoute allowedRoles={['SELLER']}>
+                <AddProduct />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/seller/product/:id"
+            element={
+              <ProtectedRoute allowedRoles={['SELLER']}>
+                <ProductDetailSeller />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 404 */}
           <Route path="*" element={<div>404 - Not Found</div>} />
         </Routes>
       </main>

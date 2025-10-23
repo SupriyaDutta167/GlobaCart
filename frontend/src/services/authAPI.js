@@ -1,14 +1,24 @@
 // Path: frontend/src/services/authAPI.js
-import api from './api'; // your axios instance or similar
+import api from './api';
 
-// Registration: { username, email, password }
+// Registration (USER)
 export const registerUser = (userData) => {
-  return api.post('/auth/register', userData, { withCredentials: true });
+  return api.post('/auth/register/user', userData, { withCredentials: true });
 };
 
-// Login: { email, password }
+// Registration (SELLER)
+export const registerSeller = (userData) => {
+  return api.post('/auth/register/seller', userData, { withCredentials: true });
+};
+
+// Login (handles both roles)
 export const loginUser = (credentials) => {
-  return api.post('/auth/login', credentials, { withCredentials: true });
+  // credentials: { email, password, role }
+  if (credentials.role === 'seller') { // 'seller' matches your Login.jsx state
+    return api.post('/auth/login/seller', credentials, { withCredentials: true });
+  }
+  // Default to user login
+  return api.post('/auth/login/user', credentials, { withCredentials: true });
 };
 
 // Logout

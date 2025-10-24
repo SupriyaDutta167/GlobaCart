@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { addProduct } from '../../services/productAPI';
 import { useNavigate } from 'react-router-dom';
+import './adminStyles/AddProduct.css';
 
 // Helper to format labels from camelCase
 const formatLabel = (key) => {
@@ -61,27 +62,39 @@ const AddProduct = () => {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '30px auto' }}>
-      <h2>Add Product</h2>
-      <form onSubmit={handleSubmit}>
-        {/* --- 4. Map over camelCase keys --- */}
-        {Object.keys(form).map((key) => (
-          <div key={key} style={{ marginBottom: '10px' }}>
-            <label style={{ display: 'block', textTransform: 'capitalize' }}>
-              {formatLabel(key)}:
-            </label>
-            <input
-              // --- 5. Set input type correctly ---
-              type={key.includes('Price') || key.includes('Percent') || key.includes('quantity') ? 'number' : 'text'}
-              name={key} // name="originalPrice"
-              value={form[key]}
-              onChange={handleChange}
-              style={{ width: '100%', padding: '8px' }}
-            />
-          </div>
-        ))}
-        <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>Add</button>
-      </form>
+    <div className="add-product-container">
+      <div className="add-product-card">
+        <h2>Add Product</h2>
+        <form onSubmit={handleSubmit} className="add-product-form">
+          {/* --- 4. Map over camelCase keys --- */}
+          {Object.keys(form).map((key) => (
+            <div key={key} className="form-group">
+              <label>
+                {formatLabel(key)}:
+              </label>
+              {key === 'description' ? (
+                <textarea
+                  name={key}
+                  value={form[key]}
+                  onChange={handleChange}
+                  placeholder={`Enter ${formatLabel(key).toLowerCase()}`}
+                />
+              ) : (
+                <input
+                  // --- 5. Set input type correctly ---
+                  type={key.includes('Price') || key.includes('Percent') || key.includes('quantity') ? 'number' : 'text'}
+                  name={key} // name="originalPrice"
+                  value={form[key]}
+                  onChange={handleChange}
+                  placeholder={`Enter ${formatLabel(key).toLowerCase()}`}
+                  step={key.includes('Price') || key.includes('Percent') ? '0.01' : '1'}
+                />
+              )}
+            </div>
+          ))}
+          <button type="submit" className="submit-btn">Add Product</button>
+        </form>
+      </div>
     </div>
   );
 };

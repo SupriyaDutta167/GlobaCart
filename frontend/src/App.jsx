@@ -13,8 +13,8 @@ import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Loader from './components/Loader'; // <-- Loader import
 import { useAuth } from './context/AuthContext';
-
 
 // Seller Pages
 import SellerDashboard from './pages/admin/SellerDashboard';
@@ -23,11 +23,15 @@ import ProductDetailSeller from './pages/admin/ProductDetailSeller';
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, loading } = useAuth();
-  if (loading) return <div style={{ padding: '20px' }}>Loading...</div>;
+
+  if (loading) return <Loader />; // <-- replaced Loading... with Loader
+
   if (!user) return <Navigate to="/login" replace />;
+
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
+
   return children;
 }
 
@@ -45,11 +49,11 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/seller/register" element={<SellerRegister />} /> {/* <-- 2. ADD ROUTE */}
 
-          {/* Protected routes (rest of file is unchanged) ... */}
+          {/* Protected routes */}
           <Route
             path="/cart"
             element={
-              <ProtectedRoute allowedRoles={['USER', 'SELLER', 'ADMIN']}> {/* Note: Backend uses uppercase roles */}
+              <ProtectedRoute allowedRoles={['USER', 'SELLER', 'ADMIN']}>
                 <Cart />
               </ProtectedRoute>
             }
@@ -83,7 +87,7 @@ export default function App() {
           <Route
             path="/seller/dashboard"
             element={
-              <ProtectedRoute allowedRoles={['SELLER', 'ADMIN']}> {/* Added ADMIN */}
+              <ProtectedRoute allowedRoles={['SELLER', 'ADMIN']}>
                 <SellerDashboard />
               </ProtectedRoute>
             }

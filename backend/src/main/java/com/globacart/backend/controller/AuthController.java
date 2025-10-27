@@ -45,6 +45,7 @@ public class AuthController {
         try {
             User user = authService.loginUser(loginRequest);
             session.setAttribute("user", user); // store user in session
+            session.setAttribute("userId", user.getId()); // <-- ADD THIS LINE
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -57,6 +58,7 @@ public class AuthController {
         try {
             User user = authService.loginSeller(loginRequest);
             session.setAttribute("user", user); // store user in session
+            session.setAttribute("userId", user.getId()); // <-- ADD THIS LINE
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -78,3 +80,4 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 }
+

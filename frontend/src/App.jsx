@@ -42,7 +42,7 @@ export default function App() {
       <main style={{ flex: 1, padding: '1rem' }}>
         <Routes>
           {/* Public routes */}
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}{/* <-- MODIFIED: This is now protected below */}
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/login" element={<Login />} />
@@ -50,6 +50,15 @@ export default function App() {
           <Route path="/seller/register" element={<SellerRegister />} /> {/* <-- 2. ADD ROUTE */}
 
           {/* Protected routes */}
+          {/* ADDED: Protected Home Route */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute allowedRoles={['USER', 'SELLER', 'ADMIN']}>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/cart"
             element={

@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // <-- ADDED
 import { listProducts } from '../services/productAPI';
 import ProductCard from '../components/ProductCard';
+import { useCart } from '../context/CartContext'; // <-- ADDED
+import { useAuth } from '../context/AuthContext'; // <-- ADDED
 import './PageStyle/Products.css';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { addItem } = useCart(); // <-- ADDED
+  const { user } = useAuth(); // <-- ADDED
+  const navigate = useNavigate(); // <-- ADDED
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -22,13 +28,23 @@ export default function Products() {
   }, []);
 
   const handleAddToCart = (product) => {
+    if (!user) {
+      navigate('/login'); // Redirect to login if not authenticated
+      return;
+    }
+    // We pass the product ID and quantity
+    addItem(product.id, 1); // <-- MODIFIED
     alert(`Added ${product.name} to cart!`);
-    // Implement actual cart logic later
   };
 
-  const handleBuyNow = (product) => {
-    alert(`Buying ${product.name}...`);
-    // Redirect to checkout or cart page later
+  const handleBuyNow = async (product) => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    // Add item and wait, then redirect
+    await addItem(product.id, 1); // <-- MODIFIED
+    navigate('/cart');
   };
 
   if (loading) return <div>Loading products...</div>;

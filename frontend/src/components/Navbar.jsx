@@ -2,14 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../context/CartContext'; // <-- Keep this
 import './ComponentStyle/Navbar.css';
 import favicon from "../assets/GlobaCart-favicon.png";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const { items } = useCart();
-  
+  const { itemCount } = useCart(); // <-- MODIFIED: Changed 'items' to 'itemCount'
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -37,12 +37,12 @@ export default function Navbar() {
           <Link 
             to="/cart" 
             className="navbar-cart"
-            aria-label={`Shopping cart with ${items.length} items`}
+            aria-label={`Shopping cart with ${itemCount} items`} // <-- MODIFIED
           >
             Cart
-            {items.length > 0 && (
+            {itemCount > 0 && ( // <-- MODIFIED
               <span className="cart-badge">
-                {items.length > 99 ? '99+' : items.length}
+                {itemCount > 99 ? '99+' : itemCount} {/* <-- MODIFIED */}
               </span>
             )}
           </Link>
@@ -52,9 +52,9 @@ export default function Navbar() {
               <Link 
                 to="/profile" 
                 className="navbar-link user-greeting"
-                title={`Go to profile for ${user.name || user.email}`}
+                title={`Go to profile for ${user.username || user.email}`} // <-- MODIFIED: use user.username
               >
-                Hi, {user.name || user.email.split('@')[0]}
+                Hi, {user.username || user.email.split('@')[0]}
               </Link>
               <button 
                 onClick={handleLogout} 

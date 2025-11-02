@@ -73,7 +73,7 @@ public class ProductService {
                 .orElseThrow(() -> new Exception("Product not found"));
 
         if (!existing.getSeller().getId().equals(sellerId)) {
-            throw new Exception("You are not authorized to update this product");
+            throw new Exception("You are not aut    horized to update this product");
         }
 
         // Update fields only if new values are provided

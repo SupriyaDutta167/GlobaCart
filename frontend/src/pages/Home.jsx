@@ -1,42 +1,39 @@
 // Path: frontend/src/pages/Home.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react'; // <-- REMOVED useEffect
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './PageStyle/Home.css';
+import Loader from '../components/Loader'; // <-- ADDED Loader
 
 const Home = () => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null); // <-- This line being removed is critical
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-  const { getUser, logout } = useAuth(); //
+  
+  // MODIFIED: Get user and loading directly from context
+  const { user, loading, logout } = useAuth(); 
+  
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const data = await getUser(); //
-      if (!data) {
-        navigate('/login'); //
-      } else {
-        setUser(data); //
-      }
-    };
-    fetchUser();
-  }, []); //
+  // REMOVED: The entire useEffect hook that called getUser() is gone.
+  // ProtectedRoute in App.jsx now handles loading and auth checks.
 
   const handleLogout = async () => {
-    await logout(); //
-    navigate('/login'); //
+    await logout();
+    navigate('/login');
   };
 
-  if (!user) return (
-    <div className="loading-container">
-      <div className="loading-spinner"></div>
-      <p>Loading...</p>
-    </div>
-  ); //
+  // MODIFIED: Use the 'loading' state from useAuth()
+  if (loading) return <Loader />;
 
+  // This is a safety check. ProtectedRoute should prevent this,
+  // but if we land here, 'user' must be null, so show Loader.
+  if (!user) return <Loader />; 
+
+  // If we get here, loading is false AND user is not null.
   return (
     <div className="home-container">
       <header className="home-header">
+        {/* ... (rest of your component is fine) ... */}
         <div className="header-content">
           <h1>Welcome back, {user.username}!</h1>
           <p className="header-subtitle">Manage your account and explore your dashboard</p>
@@ -93,7 +90,6 @@ const Home = () => {
         </div>
       </header>
 
-      {/* --- START: ADDED LOGIC --- */}
       {/* Check user role */}
       {user.role === 'SELLER' ? (
         
@@ -235,3 +231,4 @@ const Home = () => {
 };
 
 export default Home;
+

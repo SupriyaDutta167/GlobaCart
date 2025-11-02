@@ -1,12 +1,12 @@
 /* Path: frontend/src/pages/PageStyle/Login.css */
 
-/* Login Page Styles */
+/* Login Page Styles - Amazon-inspired Split Layout */
 .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 2rem 1rem;
+  padding: 2rem;
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f3e8ff 100%);
   position: relative;
   overflow: hidden;
@@ -47,18 +47,20 @@
   }
 }
 
+/* Main Card - Split Layout */
 .login-card {
   background: white;
   border-radius: 24px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-  padding: 0;
   width: 100%;
-  max-width: 440px;
+  max-width: 1000px;
+  min-height: 600px;
   border: 1px solid #e5e7eb;
   position: relative;
   overflow: hidden;
   z-index: 1;
   animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  display: flex;
 }
 
 @keyframes slideIn {
@@ -72,11 +74,51 @@
   }
 }
 
-/* Role Toggle Section - New Sliding Design */
+/* Left Side - Logo Section */
+.login-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+  z-index: 0;
+}
+
+.login-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 45%;
+  height: 100%;
+  background-image: url('/GlobaCart-favicon.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 280px 280px;
+  z-index: 1;
+  opacity: 0.95;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+}
+
+/* Right Side Container */
+.login-right-section {
+  width: 55%;
+  margin-left: 45%;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Role Toggle Section - Slides entire content */
 .role-toggle-container {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  padding: 1.5rem 1.5rem 0 1.5rem;
+  padding: 2rem 2.5rem 0 2.5rem;
   border-bottom: 2px solid #e5e7eb;
+  position: relative;
+  overflow: hidden;
 }
 
 .role-toggle {
@@ -86,7 +128,7 @@
   border-radius: 16px;
   padding: 6px;
   position: relative;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .role-toggle::before {
@@ -98,7 +140,7 @@
   border-radius: 12px;
   top: 6px;
   left: 6px;
-  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
   z-index: 0;
 }
@@ -138,9 +180,19 @@
   transform: scale(1.05);
 }
 
-/* Login Content */
+/* Login Content - Sliding Animation Container */
 .login-content {
-  padding: 2.5rem;
+  padding: 3rem 2.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sliding wrapper for content */
+.login-content-wrapper {
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 /* Header */
@@ -150,7 +202,7 @@
 }
 
 .login-title {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
   color: #1f2937;
   margin: 0 0 0.5rem 0;
@@ -162,7 +214,7 @@
 
 .login-subtitle {
   color: #6b7280;
-  font-size: 0.95rem;
+  font-size: 1rem;
   margin: 0;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -339,6 +391,29 @@
 }
 
 /* Responsive Design */
+@media (max-width: 768px) {
+  .login-card {
+    flex-direction: column;
+    max-width: 440px;
+  }
+
+  .login-card::before,
+  .login-card::after {
+    width: 100%;
+    height: 200px;
+  }
+
+  .login-card::after {
+    background-size: 150px 150px;
+  }
+
+  .login-right-section {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 200px;
+  }
+}
+
 @media (max-width: 480px) {
   .login-container {
     padding: 1rem;
@@ -369,6 +444,10 @@
   .role-toggle label {
     padding: 12px 16px;
     font-size: 0.95rem;
+  }
+
+  .login-card::after {
+    background-size: 120px 120px;
   }
 }
 

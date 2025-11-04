@@ -2,6 +2,7 @@ package com.globacart.backend.service;
 
 import com.globacart.backend.dto.AddToCartRequest;
 import com.globacart.backend.dto.CartItemDTO;
+import com.globacart.backend.dto.ProductCartDTO; // <--- IMPORT THE NEW DTO
 import com.globacart.backend.model.CartItem;
 import com.globacart.backend.model.Product;
 import com.globacart.backend.model.User;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class CartService {
 
+    // ... (Autowired properties are unchanged)
     @Autowired
     private CartItemRepository cartItemRepository;
 
@@ -28,20 +30,22 @@ public class CartService {
     @Autowired
     private UserRepository userRepository;
 
+
     // Get all items in a user's cart
     public List<CartItemDTO> getCart(Long userId) {
         List<CartItem> cartItems = cartItemRepository.findByUserId(userId);
 
+        // --- THIS LOGIC IS MODIFIED ---
         return cartItems.stream().map(item -> {
             Product p = item.getProduct();
-            Double price = (p.getDiscountPrice() != null) ? p.getDiscountPrice() : p.getOriginalPrice();
-            return new CartItemDTO(
-                    p.getId(),
-                    p.getName(),
-                    p.getImageUrl(),
-                    price,
-                    item.getQuantity()
-            );
+
+            // 1. Create the nested product DTO
+            ProductCartDTO productDTO = new ProductCartDTO(p);
+
+            // 2. Create the main CartItemDTO
+            //    It passes the productDTO and the cart quantity
+            return new CartItemDTO(productDTO, item.getQuantity());
+
         }).collect(Collectors.toList());
     }
 
@@ -75,8 +79,10 @@ public class CartService {
 
         cartItemRepository.save(cartItem);
 
-        Double price = (product.getDiscountPrice() != null) ? product.getDiscountPrice() : product.getOriginalPrice();
-        return new CartItemDTO(product.getId(), product.getName(), product.getImageUrl(), price, cartItem.getQuantity());
+        // --- THIS LOGIC IS MODIFIED ---
+        // Return the new nested DTO structure
+        ProductCartDTO productDTO = new ProductCartDTO(product);
+        return new CartItemDTO(productDTO, cartItem.getQuantity());
     }
 
     // Update the quantity of a specific item
@@ -99,8 +105,10 @@ public class CartService {
         cartItem.setQuantity(quantity);
         cartItemRepository.save(cartItem);
 
-        Double price = (product.getDiscountPrice() != null) ? product.getDiscountPrice() : product.getOriginalPrice();
-        return new CartItemDTO(product.getId(), product.getName(), product.getImageUrl(), price, cartItem.getQuantity());
+        // --- THIS LOGIC IS MODIFIED ---
+        // Return the new nested DTO structure
+        ProductCartDTO productDTO = new ProductCartDTO(product);
+        return new CartItemDTO(productDTO, cartItem.getQuantity());
     }
 
 

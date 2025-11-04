@@ -1,6 +1,7 @@
 package com.globacart.backend.dto;
 
 public class ProductDTO {
+    private Long id;
     private String name;
     private String company;
     private String category;
@@ -15,6 +16,8 @@ public class ProductDTO {
     // Getters & Setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public Long getId() { return id; } // <--- ADD THIS GETTER
+    public void setId(Long id) { this.id = id; }
 
     public String getCompany() { return company; }
     public void setCompany(String company) { this.company = company; }

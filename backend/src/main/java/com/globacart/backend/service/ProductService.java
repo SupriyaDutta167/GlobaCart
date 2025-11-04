@@ -54,6 +54,7 @@ public class ProductService {
     // Convert Product → DTO
     public ProductDTO convertToDTO(Product product) {
         ProductDTO dto = new ProductDTO();
+        dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setCompany(product.getCompany());
         dto.setCategory(product.getCategory());

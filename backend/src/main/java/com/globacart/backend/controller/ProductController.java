@@ -58,7 +58,6 @@ public class ProductController {
         return ResponseEntity.ok("Product deleted successfully");
     }
 
-    // --- Add these inside ProductController ---
 
     // Fetch products by a particular seller
     @GetMapping("/seller/{sellerId}")

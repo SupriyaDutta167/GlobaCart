@@ -1,119 +1,150 @@
-GlobaCart/
-│
-├── frontend/                         # React + Vite app
-│   ├── public/
-│   │   └── favicon.ico
-│   ├── src/
-│   │   ├── assets/
-│   │   │   └── logo.png
-│   │   ├── components/
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   ├── ProductCard.jsx
-│   │   │   ├── CartItem.jsx
-│   │   │   └── Loader.jsx
-│   │   ├── pages/
-│   │   │   ├── Home.jsx
-│   │   │   ├── Products.jsx
-│   │   │   ├── ProductDetail.jsx
-│   │   │   ├── Cart.jsx
-│   │   │   ├── Checkout.jsx
-│   │   │   ├── Profile.jsx
-│   │   │   ├── Orders.jsx
-│   │   │   └── admin/
-│   │   │       ├── AdminDashboard.jsx
-│   │   │       ├── ManageProducts.jsx
-│   │   │       ├── ManageUsers.jsx
-│   │   │       └── ManageOrders.jsx
-│   │   ├── context/
-│   │   │   ├── AuthContext.jsx
-│   │   │   └── CartContext.jsx
-│   │   ├── hooks/
-│   │   │   ├── useAuth.jsx
-│   │   │   └── useCart.jsx
-│   │   ├── services/
-│   │   │   ├── api.js
-│   │   │   ├── authAPI.js
-│   │   │   ├── productAPI.js
-│   │   │   ├── cartAPI.js
-│   │   │   ├── orderAPI.js
-│   │   │   └── paymentAPI.js
-│   │   ├── styles/
-│   │   │   └── globals.css
-│   │   ├── utils/
-│   │   │   ├── formatPrice.js
-│   │   │   └── validators.js
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── index.html
-│   ├── package.json
-│   ├── tailwind.config.js
-│   └── vite.config.js
-│
-├── backend/                          # Spring Boot backend app
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/globacart/backend/
-│   │   │   │   ├── BackendApplication.java
-│   │   │   │   ├── config/
-│   │   │   │   │   ├── SecurityConfig.java
-│   │   │   │   │   ├── JwtAuthFilter.java
-│   │   │   │   │   └── JwtUtil.java
-│   │   │   │   ├── controller/
-│   │   │   │   │   ├── AuthController.java
-│   │   │   │   │   ├── ProductController.java
-│   │   │   │   │   ├── CartController.java
-│   │   │   │   │   ├── OrderController.java
-│   │   │   │   │   ├── PaymentController.java
-│   │   │   │   │   └── AdminController.java
-│   │   │   │   ├── dto/
-│   │   │   │   │   ├── LoginRequest.java
-│   │   │   │   │   ├── SignupRequest.java
-│   │   │   │   │   ├── ProductDTO.java
-│   │   │   │   │   ├── OrderDTO.java
-│   │   │   │   │   └── PaymentDTO.java
-│   │   │   │   ├── exception/
-│   │   │   │   │   ├── GlobalExceptionHandler.java
-│   │   │   │   │   └── ResourceNotFoundException.java
-│   │   │   │   ├── model/
-│   │   │   │   │   ├── User.java
-│   │   │   │   │   ├── Product.java
-│   │   │   │   │   ├── Category.java
-│   │   │   │   │   ├── CartItem.java
-│   │   │   │   │   ├── Order.java
-│   │   │   │   │   ├── OrderItem.java
-│   │   │   │   │   └── Payment.java
-│   │   │   │   ├── repository/
-│   │   │   │   │   ├── UserRepository.java
-│   │   │   │   │   ├── ProductRepository.java
-│   │   │   │   │   ├── CategoryRepository.java
-│   │   │   │   │   ├── CartRepository.java
-│   │   │   │   │   ├── OrderRepository.java
-│   │   │   │   │   └── PaymentRepository.java
-│   │   │   │   ├── service/
-│   │   │   │   │   ├── AuthService.java
-│   │   │   │   │   ├── ProductService.java
-│   │   │   │   │   ├── CartService.java
-│   │   │   │   │   ├── OrderService.java
-│   │   │   │   │   └── PaymentService.java
-│   │   │   │   └── util/
-│   │   │   │       └── PasswordEncoderUtil.java
-│   │   │   └── resources/
-│   │   │       ├── application.properties
-│   │   │       └── data.sql
-│   │   └── test/java/com/globacart/backend/
-│   │       └── BackendApplicationTests.java
-│   ├── pom.xml
-│   └── Dockerfile
-│
-├── database/
-│   ├── schema.sql
-│   ├── seed.sql
-│   └── migrations/
-│
-├── docs/
-│   ├── module_document.pdf
-│   └── architecture.png
-│
 ├── .gitignore
-└── README.md
+├── .idea
+    ├── .gitignore
+    ├── GlobaCart.iml
+    ├── compiler.xml
+    ├── encodings.xml
+    ├── inspectionProfiles
+    │   └── Project_Default.xml
+    ├── jarRepositories.xml
+    ├── misc.xml
+    ├── modules.xml
+    └── vcs.xml
+├── .vscode
+    └── settings.json
+├── README.md
+├── backend
+    ├── .gitattributes
+    ├── .gitignore
+    ├── .mvn
+    │   └── wrapper
+    │   │   └── maven-wrapper.properties
+    ├── mvnw
+    ├── mvnw.cmd
+    ├── pom.xml
+    └── src
+    │   ├── main
+    │       ├── java
+    │       │   └── com
+    │       │   │   └── globacart
+    │       │   │       └── backend
+    │       │   │           ├── BackendApplication.java
+    │       │   │           ├── config
+    │       │   │               ├── CorsConfig.java
+    │       │   │               ├── SecurityConfig.java
+    │       │   │               ├── SessionInterceptor.java
+    │       │   │               └── WebConfig.java
+    │       │   │           ├── controller
+    │       │   │               ├── AuthController.java
+    │       │   │               ├── CartController.java
+    │       │   │               ├── OrderController.java
+    │       │   │               └── ProductController.java
+    │       │   │           ├── dto
+    │       │   │               ├── AddToCartRequest.java
+    │       │   │               ├── CartItemDTO.java
+    │       │   │               ├── CreateOrderRequest.java
+    │       │   │               ├── LoginRequest.java
+    │       │   │               ├── OrderDTO.java
+    │       │   │               ├── ProductCartDTO.java
+    │       │   │               ├── ProductDTO.java
+    │       │   │               ├── SignupRequest.java
+    │       │   │               └── UserDTO.java
+    │       │   │           ├── model
+    │       │   │               ├── CartItem.java
+    │       │   │               ├── Order.java
+    │       │   │               ├── OrderItem.java
+    │       │   │               ├── Product.java
+    │       │   │               └── User.java
+    │       │   │           ├── repository
+    │       │   │               ├── CartItemRepository.java
+    │       │   │               ├── OrderRepository.java
+    │       │   │               ├── ProductRepository.java
+    │       │   │               └── UserRepository.java
+    │       │   │           └── service
+    │       │   │               ├── AuthService.java
+    │       │   │               ├── CartService.java
+    │       │   │               ├── OrderService.java
+    │       │   │               └── ProductService.java
+    │       └── resources
+    │       │   └── application.properties
+    │   └── test
+    │       └── java
+    │           └── com
+    │               └── globacart
+    │                   └── backend
+    │                       └── BackendApplicationTests.java
+├── database
+    ├── schema.sql
+    └── seed.sql
+├── folder structure
+└── frontend
+    ├── .gitignore
+    ├── README.md
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── public
+        ├── GlobaCart-favicon.png
+        └── vite.svg
+    ├── src
+        ├── App.css
+        ├── App.jsx
+        ├── assets
+        │   ├── GlobaCart-favicon.png
+        │   └── react.svg
+        ├── components
+        │   ├── AddProductForm.jsx
+        │   ├── CartItem.jsx
+        │   ├── ComponentStyle
+        │   │   ├── Footer.css
+        │   │   ├── Loader.css
+        │   │   ├── Navbar.css
+        │   │   └── ProductCard.css
+        │   ├── Footer.jsx
+        │   ├── Loader.jsx
+        │   ├── Navbar.jsx
+        │   ├── Portal.jsx
+        │   ├── ProductCard.jsx
+        │   └── SellerProductList.jsx
+        ├── context
+        │   ├── AuthContext.jsx
+        │   └── CartContext.jsx
+        ├── index.css
+        ├── main.jsx
+        ├── pages
+        │   ├── Cart.jsx
+        │   ├── Checkout.jsx
+        │   ├── Home.jsx
+        │   ├── Login.jsx
+        │   ├── Orders.jsx
+        │   ├── PageStyle
+        │   │   ├── Cart.css
+        │   │   ├── Home.css
+        │   │   ├── Login.css
+        │   │   ├── Products.css
+        │   │   └── Register.css
+        │   ├── ProductDetail.jsx
+        │   ├── Products.jsx
+        │   ├── Profile.jsx
+        │   ├── Register.jsx
+        │   ├── SellerRegister.jsx
+        │   └── admin
+        │   │   ├── AddProduct.jsx
+        │   │   ├── AdminDashboard.jsx
+        │   │   ├── ManageOrders.jsx
+        │   │   ├── ManageProducts.jsx
+        │   │   ├── ManageUsers.jsx
+        │   │   ├── ProductDetailSeller.jsx
+        │   │   ├── SellerDashboard.jsx
+        │   │   └── adminStyles
+        │   │       ├── AddProduct.css
+        │   │       └── SellerDashboard.css
+        ├── services
+        │   ├── api.js
+        │   ├── authAPI.js
+        │   ├── cartAPI.js
+        │   └── productAPI.js
+        └── styles
+        │   └── globals.css
+    └── vite.config.js
